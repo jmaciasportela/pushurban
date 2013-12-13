@@ -1,44 +1,37 @@
-/*
- * Single Window Application Template:
- * A basic starting point for your application.  Mostly a blank canvas.
- * 
- * In app.js, we generally take care of a few things:
- * - Bootstrap the application with any data we need
- * - Check for dependencies like device type, platform version or network connection
- * - Require and open our top-level UI component
- *  
- */
+var Alloy = require("alloy"), _ = Alloy._, Backbone = Alloy.Backbone;
 
-//bootstrap and check dependencies
-if (Ti.version < 1.8 ) {
-	alert('Sorry - this application template requires Titanium Mobile SDK 1.8 or later');	  	
-}
+Alloy.Globals.tts = require("jp.isisredirect.tts");
 
-// This is a single context application with multiple windows in a stack
-(function() {
-	//render appropriate components based on the platform and form factor
-	var osname = Ti.Platform.osname,
-		version = Ti.Platform.version,
-		height = Ti.Platform.displayCaps.platformHeight,
-		width = Ti.Platform.displayCaps.platformWidth;
-	
-	//considering tablet to have one dimension over 900px - this is imperfect, so you should feel free to decide
-	//yourself what you consider a tablet form factor for android
-	var isTablet = osname === 'ipad' || (osname === 'android' && (width > 899 || height > 899));
-	
-	var Window;
-	if (isTablet) {
-		Window = require('ui/tablet/ApplicationWindow');
-	}
-	else {
-		// Android uses platform-specific properties to create windows.
-		// All other platforms follow a similar UI pattern.
-		if (osname === 'android') {
-			Window = require('ui/handheld/android/ApplicationWindow');
-		}
-		else {
-			Window = require('ui/handheld/ApplicationWindow');
-		}
-	}
-	new Window().open();
-})();
+var tts = require("jp.isisredirect.tts");
+
+tts.addEventListener(Alloy.Globals.tts.TTS_INITOK, function() {
+    Alloy.Globals.tts.speak("Arrancando motores...");
+});
+
+Alloy.Globals.tts.addEventListener(Alloy.Globals.tts.TTS_UTTERANCE_COMPLETE, function(e) {
+    "spoken Hello" == e.utteranceid && Alloy.Globals.tts.speak("world");
+});
+
+Alloy.Globals.tts.initTTS();
+
+var urbanairport = require("urbanairport");
+
+urbanairport.register({
+    debug: true,
+    sound: true,
+    vibrate: true,
+    badge: true,
+    alert: true,
+    showOnAppClick: true,
+    compatibility: true,
+    alias: "John",
+    tags: "single",
+    callback: function(e) {
+        if ("error" === e.type) alert("Sorry, no push for you: " + e.error); else if ("success" === e.type) alert("Your token is: " + e.deviceToken); else if ("callback" === e.type) {
+            alert(e.message);
+            Alloy.Globals.tts.speak(e.message.toString());
+        }
+    }
+});
+
+Alloy.createController("index");

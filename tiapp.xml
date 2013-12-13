@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?><ti:app xmlns:ti="http://ti.appcelerator.org">
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+    <property name="ti.android.bug2373.finishfalseroot" type="bool">true</property>
+    <property name="ti.android.bug2373.disableDetection" type="bool">false</property>
+    <property name="ti.android.bug2373.restartDelay" type="int">500</property>
+    <property name="ti.android.bug2373.finishDelay" type="int">0</property>
+    <property name="ti.android.bug2373.skipAlert" type="bool">true</property>
+    <property name="ti.android.bug2373.message">Loading</property>
+    <property name="ti.android.bug2373.title">Restart Required</property>
+    <property name="ti.android.bug2373.buttonText">Continue</property>
     <id>com.jmacias.pushurban</id>
     <name>pushUrban</name>
     <version>1.0</version>
@@ -36,7 +45,10 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules/>
+    <modules>
+        <module platform="android">ti.urbanairship</module>
+        <module platform="android">jp.isisredirect.tts</module>
+    </modules>
     <deployment-targets>
         <target device="iphone">false</target>
         <target device="ipad">false</target>
@@ -46,6 +58,7 @@
         <target device="tizen">false</target>
     </deployment-targets>
     <sdk-version>3.1.3.GA</sdk-version>
-<plugins><plugin version="1.0">ti.alloy</plugin>
-</plugins>
+    <plugins>
+        <plugin version="1.0">ti.alloy</plugin>
+    </plugins>
 </ti:app>
